@@ -1,5 +1,3 @@
-import { ComponentType } from 'react';
-
 import { IRoute } from '@/models';
 import { Login, Signup } from '@/screens';
 
