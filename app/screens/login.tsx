@@ -1,10 +1,11 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Pressable, Text, View } from 'react-native';
 
-import { Button, Input, Title } from '../components/ui';
+import { Button, TextField, Title } from '../components/ui';
 
 import { useTypedNavigation } from '@/hooks';
 import { ILoginForm } from '@/models';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export const Login = () => {
   const { handleSubmit, reset, control } = useForm<ILoginForm>({
@@ -25,25 +26,27 @@ export const Login = () => {
     // mutate(data);
   };
   return (
-    <View className="flex flex-col space-y-4">
-      <View className="flex">
-        <Title>Hey, please login 👋</Title>
-      </View>
-      <Input<ILoginForm>
+    <View className="flex flex-col">
+      <Title>Hey, please login 👋</Title>
+      <TextField<ILoginForm>
+        prefix={<AntDesign name="user" size={18} />}
         placeholder="Your email"
         control={control}
         name="username"
         rules={{ required: 'Please input your email!' }}
         keyboardType="email-address"
         block
+        margin
       />
-      <Input<ILoginForm>
+      <TextField<ILoginForm>
+        prefix={<AntDesign name="lock" size={18} />}
         placeholder="Your password"
         control={control}
         secureTextEntry
         name="password"
         block
         rules={{ required: 'Please input your password!' }}
+        margin
       />
       <Button
         label="Login"
@@ -51,7 +54,7 @@ export const Login = () => {
         block
         onPress={handleSubmit(onSubmit)}
       />
-      <View>
+      <View className="pt-4 mt-4 border-t border-gray-300">
         <Pressable onPress={() => navigate('Signup')}>
           <Text>
             Don't have account yet? Please{' '}

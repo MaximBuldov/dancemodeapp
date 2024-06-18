@@ -1,6 +1,6 @@
+import { IRUser, IUser, IUserResponse, IUserRoles } from '@models';
 import { makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
-import { IRUser, IUser, IUserResponse, IUserRoles } from 'models';
 import { secureLs } from 'utils';
 
 class User {
@@ -8,7 +8,11 @@ class User {
 
   constructor() {
     makeAutoObservable(this);
-    makePersistable(this, { name: 'user', properties: ['data'], storage: window.localStorage });
+    makePersistable(this, {
+      name: 'user',
+      properties: ['data'],
+      storage: window.localStorage
+    });
   }
 
   setUser(data: IUserResponse) {
