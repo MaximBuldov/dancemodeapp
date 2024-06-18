@@ -1,5 +1,5 @@
+import { IProduct } from '@/models';
 import dayjs from 'dayjs';
-import { IProduct } from 'models';
 
 interface GroupedData {
   [key: string]: IProduct[]; // Define an index signature for the object

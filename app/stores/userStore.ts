@@ -1,7 +1,8 @@
-import { IRUser, IUser, IUserResponse, IUserRoles } from '@models';
+import { IRUser, IUser, IUserResponse, IUserRoles } from '@/models';
+import { secureLs } from '@/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
-import { secureLs } from 'utils';
 
 class User {
   data: IRUser | null = null;
@@ -11,7 +12,7 @@ class User {
     makePersistable(this, {
       name: 'user',
       properties: ['data'],
-      storage: window.localStorage
+      storage: AsyncStorage
     });
   }
 

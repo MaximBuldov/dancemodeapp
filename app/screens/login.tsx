@@ -5,7 +5,10 @@ import { Button, TextField, Title } from '../components/ui';
 
 import { useTypedNavigation } from '@/hooks';
 import { ILoginForm } from '@/models';
+import { userService } from '@/services';
+import { userStore } from '@/stores';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useMutation } from '@tanstack/react-query';
 
 export const Login = () => {
   const { handleSubmit, reset, control } = useForm<ILoginForm>({
@@ -13,17 +16,19 @@ export const Login = () => {
   });
   const { navigate } = useTypedNavigation();
 
-  // const { mutate, isPending } = useMutation({
-  // 	mutationFn: userService.login,
-  // 	onSuccess: data => {
-  // 		// navigate('/');
-  // 		// userStore.setUser(data);
-  // 	}
-  // });
+  const { mutate, isPending } = useMutation({
+    mutationFn: userService.login,
+    onSuccess: (data) => {
+      navigate('Calendar');
+      userStore.setUser(data);
+    },
+    onError: () => {
+      reset();
+    }
+  });
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
-    console.log(data);
-    // mutate(data);
+    mutate(data);
   };
   return (
     <View className="flex flex-col">
@@ -52,6 +57,7 @@ export const Login = () => {
         label="Login"
         type="primary"
         block
+        isLoading={isPending}
         onPress={handleSubmit(onSubmit)}
       />
       <View className="pt-4 mt-4 border-t border-gray-300">

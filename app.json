@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "DanceModeApp",
-    "slug": "DanceModeApp",
+    "slug": "dancemode",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.maximbuldov.dancemode"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,6 +23,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "73a2123d-86ef-4bf2-a9bb-9436a5631567"
+      }
+    },
+    "owner": "maximbuldov"
   }
 }

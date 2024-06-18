@@ -1,13 +1,14 @@
-import { IBatchProducts, IProduct } from 'models';
+import { IBatchProducts, IProduct } from '@/models';
 
-import { $wc } from '../http';
+import { $wc } from '@/routes/http';
 
 class ProductService {
   async getAll(params?: any) {
     try {
       const res = await $wc.get('/wc/v3/products', {
         params: {
-          _fields: 'id,name,price,date_time,is_canceled,total_sales,stock_status,cancel,confirm,categories,paid,pending,stock_quantity,wait_list',
+          _fields:
+            'id,name,price,date_time,is_canceled,total_sales,stock_status,cancel,confirm,categories,paid,pending,stock_quantity,wait_list',
           ...params
         }
       });

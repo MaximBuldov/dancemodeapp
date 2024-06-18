@@ -1,7 +1,7 @@
-import { userStore } from 'stores';
-import { ICoupon } from 'models';
+import { ICoupon } from '@/models';
+import { userStore } from '@/stores';
 
-import { $wc } from '../http';
+import { $wc } from '@/routes/http';
 
 class CouponService {
   async getMy(params?: any) {
@@ -12,7 +12,7 @@ class CouponService {
           ...params
         }
       });
-      res.data = res.data.filter(el => el.usage_count < el.usage_limit);
+      res.data = res.data.filter((el) => el.usage_count < el.usage_limit);
       return res;
     } catch (error) {
       throw error;

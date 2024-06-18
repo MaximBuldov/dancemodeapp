@@ -10,6 +10,7 @@ interface IInput
   addonBefore?: string;
   prefix?: React.ReactNode;
   onChange?: (...event: any[]) => void;
+  small?: boolean;
   value?: string | number;
 }
 
@@ -21,15 +22,17 @@ export const Input = ({
   onChange,
   onBlur,
   value,
+  small,
   ...rest
 }: IInput): JSX.Element => {
   return (
     <View className={clsx(margin && 'mb-4')}>
       <View
         className={clsx(
-          'flex rounded-lg border bg-white p-3 flex-row',
+          'flex rounded-lg border bg-white px-3 flex-row',
           error ? 'border-red-500' : 'border-gray-300',
-          block && 'w-full'
+          block && 'w-full',
+          small ? 'py-1' : 'py-3'
         )}
       >
         {prefix && <View className="mt-1 mr-2">{prefix}</View>}

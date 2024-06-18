@@ -1,7 +1,8 @@
+import { ICoupon, IProduct } from '@/models';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs, { Dayjs } from 'dayjs';
 import { makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
-import { ICoupon, IProduct } from 'models';
 
 class CartStore {
   data: IProduct[] = [];
@@ -12,7 +13,7 @@ class CartStore {
     makePersistable(this, {
       name: 'cart',
       properties: ['data', 'coupons'],
-      storage: window.localStorage
+      storage: AsyncStorage
     });
   }
 
@@ -188,6 +189,7 @@ class CartStore {
           dayjs(el.date_time).isSame(data.date_time, 'month') &&
           dayjs(el.date_time).day() === dayjs(data.date_time).day()
         ) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { total, ...rest } = el;
           return rest;
         } else {

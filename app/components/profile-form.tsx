@@ -1,11 +1,13 @@
 import { ISignupForm, IUser } from '@/models';
-import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
-import { DateField, TextField, Title } from './ui';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { useRef } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView } from 'react-native';
+import { Button, DateField, TextField, Title } from './ui';
 
 interface ProfileFormProps {
   title: string;
-  onSubmit: (data: ISignupForm) => void;
+  onSubmit: SubmitHandler<ISignupForm>;
   isPending: boolean;
   isLabels: boolean;
   submitButton: string;
@@ -33,7 +35,9 @@ export const ProfileForm = ({
   initialValues,
   isRequired
 }: ProfileFormProps) => {
-  const { handleSubmit, reset, control } = useForm();
+  const { handleSubmit, reset, control, watch } = useForm<ISignupForm>();
+  const passwordRef = useRef({});
+  passwordRef.current = watch('password', '');
 
   const label = (text: string) => {
     return isLabels ? text : '';
@@ -54,147 +58,119 @@ export const ProfileForm = ({
     dob
   } = labelsConfig;
 
+  const fieldConfig = {
+    control,
+    block: true,
+    margin: true,
+    small: true
+  };
+
   return (
-    <View>
+    <ScrollView>
       <Title>{title}</Title>
-      <TextField
+      <TextField<ISignupForm>
+        prefix={<AntDesign name="user" size={18} />}
         addonBefore={label(firstName)}
         placeholder={placeholder(firstName)}
-        control={control}
         name="first_name"
         rules={{ required: 'Please input your first name!' }}
-        block
-        margin
+        {...fieldConfig}
       />
-      <TextField
+      <TextField<ISignupForm>
+        prefix={<AntDesign name="user" size={18} />}
         addonBefore={label(lastName)}
         placeholder={placeholder(lastName)}
-        control={control}
         name="last_name"
         rules={{ required: 'Please input your last name!' }}
-        block
-        margin
+        {...fieldConfig}
       />
-      <DateField
+      <DateField<ISignupForm>
+        prefix={<AntDesign name="calendar" size={18} />}
         addonBefore="Date of Birthday"
         placeholder={placeholder(dob)}
-        control={control}
-        name="dob"
+        name="acf.dob"
         rules={{ required: 'Please input your date of birthday!' }}
-        block
-        margin
+        {...fieldConfig}
       />
-      {/* 
-        </Item>
-        <Item
-          name={['acf', 'dob']}
-          rules={[
-            {
-              required: isRequired,
-              message: 'Please input your date of birthday!'
-            }
-          ]}
-        >
-          <Input
-            addonBefore="Date of Birthday"
-            type="date"
-            placeholder={placeholder(dob)}
-            style={{ width: '100%' }}
-          />
-        </Item>
-        <Item
-          name="email"
-          rules={[
-            { required: isRequired, message: 'Please input your email!' },
-            { type: 'email', message: 'The input is not valid E-mail!' }
-          ]}
-        >
-          <Input
-            addonBefore={label(email)}
-            prefix={<MailOutlined />}
-            placeholder={placeholder(email)}
-          />
-        </Item>
-        <Item
-          name={['acf', 'billing_phone']}
-          rules={[
-            { required: isRequired, message: 'Please input your phone!' },
-            {
-              min: 10,
-              message: 'Please enter correct phone number'
-            }
-          ]}
-        >
-          <Input
-            maxLength={10}
-            addonBefore={label(phone)}
-            prefix={<PhoneOutlined />}
-            placeholder={placeholder(phone)}
-          />
-        </Item>
-        <Item
-          name={['acf', 'instagram']}
-          rules={[
-            { required: isRequired, message: 'Please input your instagram!' }
-          ]}
-        >
-          <Input
-            addonBefore={label(instagram)}
-            prefix={<InstagramOutlined />}
-            placeholder={`${placeholder(instagram)} @dancemode`}
-          />
-        </Item>
-        <Item
-          name="password"
-          hasFeedback
-          rules={[
-            {
-              required: isRequired,
-              message: 'Please input your password!'
-            },
-            {
-              min: 6,
-              message: 'Minimum password length is 6 characters'
-            }
-          ]}
-        >
-          <Input.Password
-            addonBefore={label(password)}
-            prefix={<LockOutlined />}
-            placeholder={placeholder(password)}
-          />
-        </Item>
-        <Item
-          name="confirm"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            {
-              required: isRequired,
-              message: 'Please confirm your password!'
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  new Error('The new password that you entered do not match!')
-                );
-              }
-            })
-          ]}
-        >
-          <Input.Password
-            addonBefore={label(confirmPassword)}
-            placeholder={placeholder(confirmPassword)}
-            prefix={<LockOutlined />}
-          />
-        </Item>
-        <Button type="primary" htmlType="submit" block loading={isPending}>
-          {submitButton}
-        </Button>
-      </Form> */}
-    </View>
+      <TextField<ISignupForm>
+        prefix={<AntDesign name="mail" size={18} />}
+        addonBefore={label(email)}
+        placeholder={placeholder(email)}
+        name="email"
+        keyboardType="email-address"
+        rules={{
+          required: 'Please input your email!',
+          pattern: {
+            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            message: 'Invalid email address'
+          }
+        }}
+        {...fieldConfig}
+      />
+      <TextField<ISignupForm>
+        prefix={<AntDesign name="phone" size={18} />}
+        addonBefore={label(phone)}
+        placeholder={placeholder(phone)}
+        name="acf.billing_phone"
+        keyboardType="phone-pad"
+        rules={{
+          required: 'Please input your phone!',
+          minLength: {
+            value: 10,
+            message: 'Please enter correct phone number'
+          },
+          maxLength: {
+            value: 10,
+            message: 'Please enter correct phone number'
+          }
+        }}
+        {...fieldConfig}
+      />
+      <TextField<ISignupForm>
+        prefix={<AntDesign name="instagram" size={18} />}
+        addonBefore={label(instagram)}
+        placeholder={`${placeholder(instagram)} @dancemode`}
+        keyboardType="email-address"
+        name="acf.instagram"
+        rules={{
+          required: 'Please input your instagram!'
+        }}
+        {...fieldConfig}
+      />
+      <TextField<ISignupForm>
+        prefix={<AntDesign name="lock" size={18} />}
+        placeholder={placeholder(password)}
+        addonBefore={label(password)}
+        secureTextEntry
+        name="password"
+        rules={{
+          required: 'Please input your password!',
+          minLength: {
+            value: 6,
+            message: 'Minimum password length is 6 characters'
+          }
+        }}
+        {...fieldConfig}
+      />
+      <TextField<ISignupForm>
+        prefix={<AntDesign name="lock" size={18} />}
+        placeholder={placeholder(confirmPassword)}
+        addonBefore={label(confirmPassword)}
+        secureTextEntry
+        name="confirm"
+        rules={{
+          required: 'Please input your password!',
+          validate: (value) =>
+            value === passwordRef.current || 'The password does not match'
+        }}
+        {...fieldConfig}
+      />
+      <Button
+        label={submitButton}
+        type="primary"
+        block
+        onPress={handleSubmit(onSubmit)}
+      />
+    </ScrollView>
   );
 };

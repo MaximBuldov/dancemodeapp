@@ -1,5 +1,5 @@
 import { IRoute } from '@/models';
-import { Login, Signup } from '@/screens';
+import { ForgotPassword, Login, Signup } from '@/screens';
 
 // export const adminRoutes: IRoute[] = [
 // 	{
@@ -60,16 +60,16 @@ import { Login, Signup } from '@/screens';
 // ];
 
 export const publicRoutes: IRoute[] = [
-	{
-		name: 'Login',
-		component: Login
-	},
-	{
-		name: 'Signup',
-		component: Signup
-	}
-	// {
-	// 	name: FORGOT_PASSWORD,
-	// 	component: ForgotPassword
-	// }
+  {
+    name: 'Login',
+    component: Login
+  },
+  {
+    name: 'Signup',
+    component: Signup
+  },
+  {
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  }
 ];

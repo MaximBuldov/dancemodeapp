@@ -1,5 +1,5 @@
+import { ICreateProductsForm, NameOfClass } from '@/models';
 import dayjs from 'dayjs';
-import { ICreateProductsForm, NameOfClass } from 'models';
 
 export function prepareProducts(values: ICreateProductsForm) {
   const products = [];

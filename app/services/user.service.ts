@@ -8,7 +8,7 @@ import {
 } from '@/models';
 import { userStore } from '@/stores';
 
-import { $api, $auth, $wc } from '../http';
+import { $api, $auth, $wc } from '@/routes/http';
 
 const _fields = 'id,role,acf,first_name,last_name,email,date_created';
 

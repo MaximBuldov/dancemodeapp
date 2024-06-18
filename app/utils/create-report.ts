@@ -1,4 +1,4 @@
-import { IPaymentMethod, IROrder, IReport, NameOfClass } from 'models';
+import { IPaymentMethod, IROrder, IReport, NameOfClass } from '@/models';
 
 export const createReport = (arr: IROrder[]): IReport[] => {
   return Object.values(
