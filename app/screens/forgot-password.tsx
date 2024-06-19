@@ -1,4 +1,4 @@
-import { Button, TextField, Title } from '@/components';
+import { Button, TextField, Title } from '@/components/ui';
 import { useTypedNavigation } from '@/hooks';
 import { IResetPassword } from '@/models';
 import AntDesign from '@expo/vector-icons/AntDesign';

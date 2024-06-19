@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Pressable, Text, View } from 'react-native';
 
-import { Button, TextField, Title } from '../components/ui';
+import { Button, TextField, Title } from '@/components/ui';
 
 import { useTypedNavigation } from '@/hooks';
 import { ILoginForm } from '@/models';
@@ -9,6 +9,7 @@ import { userService } from '@/services';
 import { userStore } from '@/stores';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useMutation } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 
 export const Login = () => {
   const { handleSubmit, reset, control } = useForm<ILoginForm>({
@@ -19,7 +20,7 @@ export const Login = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: userService.login,
     onSuccess: (data) => {
-      navigate('Calendar');
+      data.user.acf.dob = dayjs(data.user.acf.dob).format('MM/DD/YYYY');
       userStore.setUser(data);
     },
     onError: () => {

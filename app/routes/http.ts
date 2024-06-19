@@ -1,5 +1,5 @@
 import { userStore } from '@/stores';
-import { secureLs } from '@/utils';
+import { secureStore } from '@/utils';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -18,7 +18,7 @@ const $auth = axios.create({
 //api
 const $api = axios.create({ ...axiosInstance.defaults });
 const authInterceptor = (config: any) => {
-  config.headers.authorization = `Bearer ${secureLs.get('token')}`;
+  config.headers.authorization = `Bearer ${secureStore.getItem('token')}`;
   return config;
 };
 
@@ -28,7 +28,6 @@ $api.interceptors.response.use(
   (error) => {
     if (error?.response?.data?.code === 'jwt_auth_invalid_token') {
       userStore.logout();
-      // redirect('/');
     }
     return Promise.reject(error);
   }

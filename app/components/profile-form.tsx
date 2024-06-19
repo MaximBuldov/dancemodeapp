@@ -2,7 +2,7 @@ import { ISignupForm, IUser } from '@/models';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { Button, DateField, TextField, Title } from './ui';
 
 interface ProfileFormProps {
@@ -11,7 +11,7 @@ interface ProfileFormProps {
   isPending: boolean;
   isLabels: boolean;
   submitButton: string;
-  initialValues: IUser | null;
+  initialValues?: IUser;
   isRequired: boolean;
 }
 
@@ -35,7 +35,9 @@ export const ProfileForm = ({
   initialValues,
   isRequired
 }: ProfileFormProps) => {
-  const { handleSubmit, reset, control, watch } = useForm<ISignupForm>();
+  const { handleSubmit, control, watch } = useForm<ISignupForm>({
+    defaultValues: initialValues
+  });
   const passwordRef = useRef({});
   passwordRef.current = watch('password', '');
 
@@ -66,14 +68,19 @@ export const ProfileForm = ({
   };
 
   return (
-    <ScrollView>
+    <View>
       <Title>{title}</Title>
       <TextField<ISignupForm>
         prefix={<AntDesign name="user" size={18} />}
         addonBefore={label(firstName)}
         placeholder={placeholder(firstName)}
         name="first_name"
-        rules={{ required: 'Please input your first name!' }}
+        rules={{
+          required: {
+            value: isRequired,
+            message: 'Please input your first name!'
+          }
+        }}
         {...fieldConfig}
       />
       <TextField<ISignupForm>
@@ -81,7 +88,12 @@ export const ProfileForm = ({
         addonBefore={label(lastName)}
         placeholder={placeholder(lastName)}
         name="last_name"
-        rules={{ required: 'Please input your last name!' }}
+        rules={{
+          required: {
+            message: 'Please input your last name!',
+            value: isRequired
+          }
+        }}
         {...fieldConfig}
       />
       <DateField<ISignupForm>
@@ -89,7 +101,12 @@ export const ProfileForm = ({
         addonBefore="Date of Birthday"
         placeholder={placeholder(dob)}
         name="acf.dob"
-        rules={{ required: 'Please input your date of birthday!' }}
+        rules={{
+          required: {
+            message: 'Please input your date of birthday!',
+            value: isRequired
+          }
+        }}
         {...fieldConfig}
       />
       <TextField<ISignupForm>
@@ -99,7 +116,10 @@ export const ProfileForm = ({
         name="email"
         keyboardType="email-address"
         rules={{
-          required: 'Please input your email!',
+          required: {
+            message: 'Please input your email!',
+            value: isRequired
+          },
           pattern: {
             value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
             message: 'Invalid email address'
@@ -114,7 +134,10 @@ export const ProfileForm = ({
         name="acf.billing_phone"
         keyboardType="phone-pad"
         rules={{
-          required: 'Please input your phone!',
+          required: {
+            message: 'Please input your phone!',
+            value: isRequired
+          },
           minLength: {
             value: 10,
             message: 'Please enter correct phone number'
@@ -133,7 +156,10 @@ export const ProfileForm = ({
         keyboardType="email-address"
         name="acf.instagram"
         rules={{
-          required: 'Please input your instagram!'
+          required: {
+            message: 'Please input your instagram!',
+            value: isRequired
+          }
         }}
         {...fieldConfig}
       />
@@ -144,7 +170,10 @@ export const ProfileForm = ({
         secureTextEntry
         name="password"
         rules={{
-          required: 'Please input your password!',
+          required: {
+            message: 'Please input your password!',
+            value: isRequired
+          },
           minLength: {
             value: 6,
             message: 'Minimum password length is 6 characters'
@@ -159,7 +188,10 @@ export const ProfileForm = ({
         secureTextEntry
         name="confirm"
         rules={{
-          required: 'Please input your password!',
+          required: {
+            message: 'Please input your password!',
+            value: isRequired
+          },
           validate: (value) =>
             value === passwordRef.current || 'The password does not match'
         }}
@@ -170,7 +202,8 @@ export const ProfileForm = ({
         type="primary"
         block
         onPress={handleSubmit(onSubmit)}
+        isLoading={isPending}
       />
-    </ScrollView>
+    </View>
   );
 };

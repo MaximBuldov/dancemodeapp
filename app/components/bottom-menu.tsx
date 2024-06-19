@@ -2,60 +2,72 @@ import { Pressable, Text, View } from 'react-native';
 
 import { useTypedNavigation } from '@/hooks';
 import { TypeRootStackParamList } from '@/models';
+import { userStore } from '@/stores';
+import { observer } from 'mobx-react-lite';
 
-interface menuItem {
+interface IMenuItem {
   label: string;
   icon: string;
   path: keyof TypeRootStackParamList;
 }
 
-const userItems = [
+const userItems: IMenuItem[] = [
   {
     label: 'classes',
-    icon: '🗓️'
+    icon: '🗓️',
+    path: 'Classes'
   },
   {
     label: 'coupons',
-    icon: '🎟️'
+    icon: '🎟️',
+    path: 'Coupons'
   },
   {
     label: 'payments',
-    icon: '💵'
+    icon: '💵',
+    path: 'Payments'
   },
   {
     label: 'profile',
-    icon: '💃'
+    icon: '💃',
+    path: 'Profile'
   }
 ];
 
-const adminItems = [
+const adminItems: IMenuItem[] = [
   {
     label: 'calendar',
-    icon: '🗓️'
+    icon: '🗓️',
+    path: 'Calendar'
   },
   {
     label: 'students',
-    icon: '👯‍♀️'
+    icon: '👯‍♀️',
+    path: 'Students'
   },
   {
     label: 'orders',
-    icon: '💵'
+    icon: '💵',
+    path: 'Orders'
   },
   {
     label: 'reports',
-    icon: '🗂️'
+    icon: '🗂️',
+    path: 'Reports'
   },
   {
     label: 'coupon',
-    icon: '🎟️'
+    icon: '🎟️',
+    path: 'Coupon'
   },
   {
     label: 'profile',
-    icon: '💃'
+    icon: '💃',
+    path: 'Profile'
   }
 ];
 
-const publicItems: menuItem[] = [
+const publicItems: IMenuItem[] = [
   {
     label: 'login',
     icon: '🚪',
@@ -73,14 +85,20 @@ const publicItems: menuItem[] = [
   }
 ];
 
-export const BottomMenu = () => {
+export const BottomMenu = observer(() => {
   const { navigate } = useTypedNavigation();
+  const menuItems: IMenuItem[] = userStore.isAuth
+    ? userStore.isAdmin
+      ? adminItems
+      : userItems
+    : publicItems;
+
   return (
     <View className="absolute bottom-0 flex w-full flex-row items-center justify-between bg-white p-4">
-      {publicItems.map((el) => (
+      {menuItems.map((el) => (
         <Pressable
           key={el.label}
-          className="w-1/3"
+          className={`w-1/${menuItems.length}`}
           onPress={() => navigate(el.path)}
         >
           <Text className="text-center text-xl">{el.icon}</Text>
@@ -89,4 +107,4 @@ export const BottomMenu = () => {
       ))}
     </View>
   );
-};
+});

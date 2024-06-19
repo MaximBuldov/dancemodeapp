@@ -27,7 +27,7 @@ class CartStore {
   clear() {
     this.data = [];
     this.coupons = [];
-    localStorage.removeItem('cart');
+    AsyncStorage.removeItem('cart');
   }
 
   isInCart(product: IProduct) {

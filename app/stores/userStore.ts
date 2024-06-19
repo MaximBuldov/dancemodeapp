@@ -1,5 +1,5 @@
 import { IRUser, IUser, IUserResponse, IUserRoles } from '@/models';
-import { secureLs } from '@/utils';
+import { secureStore } from '@/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
@@ -18,7 +18,7 @@ class User {
 
   setUser(data: IUserResponse) {
     this.data = data.user;
-    secureLs.set('token', data.token);
+    secureStore.setItem('token', data.token);
   }
 
   updateUser(data: IUser) {
@@ -26,7 +26,7 @@ class User {
   }
 
   logout() {
-    localStorage.clear();
+    AsyncStorage.clear();
     this.data = null;
   }
 
